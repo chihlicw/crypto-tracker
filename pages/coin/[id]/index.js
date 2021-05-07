@@ -1,19 +1,10 @@
-import Link from 'next/link'
 import CoinSummary from '../../../components/CoinSummary'
 
-const coin = ({ coin }) => {
+const coin = ({ coin, prices }) => {
+	
 	return (
 		<>
-			<CoinSummary data={coin.data} />
-			{/* <h1>{coin.data.Coin}</h1>
-			<p>Recorded at: {coin.data.recorded_at}</p>
-			<p>MarketCap: {coin.data.MarketCap}</p>
-			<p>Price: {coin.data.Price}</p>
-			<p>Supply: {coin.data.Supply}</p>
-			<p>Volume: {coin.data.Volume}</p>
-			<p>HourChange: {coin.data.HourChange}</p>
-			<p>DayChange: {coin.data.DayChange}</p>
-			<p>WeekChange: {coin.data.WeekChange}</p> */}
+			<CoinSummary data={coin.data} prices={prices.data}/>
 		</>
 	)
 }
@@ -25,9 +16,16 @@ export const getStaticProps = async (context) => {
 
 	const coin = await res.json()
 
+	const res2 = await fetch (
+		`https://cryptoviz.herokuapp.com/all/Bitcoin?access_token=c7f02dce-d489-444a-a588-41d5287f2451&fbclid=IwAR20Ctshq3cf4CmOjNigyw5NK1LSpSW2hagCrQmJBgPc0MMSyEWiV1ve7bI`
+	)
+
+	const prices = await res2.json()
+
 	return {
 		props: {
 			coin,
+			prices,
 		},
 	}
 }
@@ -39,12 +37,10 @@ export const getStaticPaths = async () => {
 
 	const coins = await res.json()
 
-	//   const ids = coins.map((coin) => coin.id)
-	//   const paths = ids.map((id) => ({ params: { id: id.toString() } }))
-
 	var array = [coins]
-	const ids = array.map((coin) => coin.data.id)
-	const paths = ids.map((id) => ({ params: { id: id.toString() } }))
+
+	const Coins = array.map((coin) => coin.data.Coin)
+	const paths = Coins.map((coin) => ({ params: { id: coin.toString() } }))
 
 	return {
 		paths,

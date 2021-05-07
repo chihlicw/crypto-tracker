@@ -2,5 +2,8 @@
     "editor.formatOnSave": true,
     "prettier.jsxSingleQuote": true,
     "prettier.semi": false,
-    "prettier.singleQuote": true
+    "prettier.singleQuote": true,
+    "prettier.quoteProps": "consistent",
+    "prettier.useTabs": true,
+    "prettier.tabWidth": 4
 }
